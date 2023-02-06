@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Api } from 'js/Api';
 import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
 import { Modal } from 'components/Modal/Modal';
@@ -12,6 +12,8 @@ export const ImageGallery = ({ name, page, total }) => {
     const [showModal, setShowModal] = useState(false);
     const [loading, setLoading] = useState(false);
 
+    let hits = useRef(12);
+
     useEffect(() => {
         if (name === '') {
             return;
@@ -21,8 +23,11 @@ export const ImageGallery = ({ name, page, total }) => {
             .then(data => {
                 if (name !== '' && page === 1) {
                     setPictures(data.hits);
+                    console.log(data.totalHits);
+                    hits.current = 12;
                 } else {
-                    if (pictures.length === data.totalHits) {
+                    hits.current += data.hits.length;
+                    if (hits.current > data.totalHits) {
                         return;
                     }
                     setPictures(prevState => [...prevState, ...data.hits]);
