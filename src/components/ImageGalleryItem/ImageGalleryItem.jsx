@@ -1,4 +1,5 @@
 import style from './ImageGalleryItem.module.css';
+
 export const ImageGalleryItem = ({ pictures, onClose }) => {
     if (pictures) {
         return pictures.map(({ id, webformatURL, largeImageURL, tags }) => {
